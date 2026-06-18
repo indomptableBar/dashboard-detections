@@ -5,7 +5,7 @@ Ce tableau de bord offre une vision centralisée de l'état du système en combi
 analyse réseau et détection d'événements de sécurité dans une interface unique et intuitive.
 
 
-
+<br>
 🛡️ Dashboard de Surveillance et d'Évaluation des Risques Système
 
 Cette interface fournit une vue d'ensemble en temps réel de l'état de sécurité d'un système. 
