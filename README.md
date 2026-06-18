@@ -5,4 +5,4 @@
 
 <img src="application.png" align="right"/>
 
- <center>(Photo non contractelle)</center>
+
