@@ -1,11 +1,16 @@
 <img src="application.png" align="center"/>
 <br>
 <br><br><br>
-Le tableau de bord offre une vision centralisée de l'état du système en combinant métriques système, analyse réseau et détection d'événements de sécurité dans une interface unique et intuitive.
+Ce tableau de bord offre une vision centralisée de l'état du système en combinant métriques système,
+analyse réseau et détection d'événements de sécurité dans une interface unique et intuitive.
+
+
 
 🛡️ Dashboard de Surveillance et d'Évaluation des Risques Système
 
-Cette interface fournit une vue d'ensemble en temps réel de l'état de sécurité d'un système. Elle centralise les informations essentielles liées aux processus, aux ports réseau, aux connexions actives et aux alertes de sécurité afin de faciliter la détection d'anomalies et l'analyse des risques.
+Cette interface fournit une vue d'ensemble en temps réel de l'état de sécurité d'un système. 
+Elle centralise les informations essentielles liées aux processus, aux ports réseau, aux connexions actives 
+et aux alertes de sécurité afin de faciliter la détection d'anomalies et l'analyse des risques.
 
 - Fonctionnalités principales
 - Vue d'ensemble du système
