@@ -1,3 +1,6 @@
+<img src="application.png" align="right"/>
+<br>
+
 Le tableau de bord offre une vision centralisée de l'état du système en combinant métriques système, analyse réseau et détection d'événements de sécurité dans une interface unique et intuitive.
 
 🛡️ Dashboard de Surveillance et d'Évaluation des Risques Système
@@ -91,6 +94,6 @@ Environnement de laboratoire cybersécurité.
 Démonstration et apprentissage de la sécurité offensive/défensive.
 
 
-<img src="application.png" align="right"/>
+
 
 
