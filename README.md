@@ -1,4 +1,4 @@
-<img src="application.png" align="right"/>
+<img src="application.png" align="center"/>
 <br>
 <br><br><br>
 Le tableau de bord offre une vision centralisée de l'état du système en combinant métriques système, analyse réseau et détection d'événements de sécurité dans une interface unique et intuitive.
