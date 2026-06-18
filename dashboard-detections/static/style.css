@@ -1,0 +1,464 @@
+:root {
+  --bg-primary: #0b0c10;
+  --bg-secondary: #111217;
+  --bg-card: #161822;
+  --bg-card-hover: #1c1e2e;
+  --bg-input: #1e2030;
+  --border-color: #2a2d3a;
+  --border-active: #00bcd4;
+  --text-primary: #d8d9da;
+  --text-secondary: #8b8d97;
+  --text-muted: #5a5d6e;
+  --accent: #00bcd4;
+  --accent-dim: rgba(0, 188, 212, 0.15);
+  --success: #00e676;
+  --success-dim: rgba(0, 230, 118, 0.15);
+  --warning: #ffd740;
+  --warning-dim: rgba(255, 215, 64, 0.15);
+  --danger: #ff1744;
+  --danger-dim: rgba(255, 23, 68, 0.15);
+  --critical: #d500f9;
+  --critical-dim: rgba(213, 0, 249, 0.15);
+  --font-mono: 'Fira Code', 'Cascadia Code', 'JetBrains Mono', 'Consolas', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-secondary); }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Top Navigation */
+.topbar {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.topbar-logo .logo-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.secure-boot-badge {
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.secure-boot-badge.enabled { background: var(--success-dim); color: var(--success); border: 1px solid var(--success); }
+.secure-boot-badge.disabled { background: var(--danger-dim); color: var(--danger); border: 1px solid var(--danger); }
+.secure-boot-badge.unknown { background: var(--warning-dim); color: var(--warning); border: 1px solid var(--warning); }
+
+.topbar-host {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* Layout */
+.container { max-width: 1600px; margin: 0 auto; padding: 20px 24px; }
+
+/* Stats Row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.stat-card:hover { border-color: var(--accent); background: var(--bg-card-hover); }
+
+.stat-value {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.stat-card.alerts .stat-value { color: var(--danger); }
+.stat-card.risk .stat-value { color: var(--warning); }
+.stat-card.ports .stat-value { color: var(--accent); }
+.stat-card.procs .stat-value { color: var(--success); }
+.stat-card.connections .stat-value { color: var(--accent); }
+.stat-card.malware .stat-value { color: var(--critical); }
+.stat-card.cpu .stat-value { color: var(--accent); }
+.stat-card.memory .stat-value { color: var(--success); }
+.stat-card.disk .stat-value { color: var(--warning); }
+
+/* Grid layout */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+@media (max-width: 1200px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.card-header:hover { background: var(--bg-card-hover); }
+
+.card-header .badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.card-header .badge.danger { background: var(--danger-dim); color: var(--danger); }
+.card-header .badge.warning { background: var(--warning-dim); color: var(--warning); }
+.card-header .badge.success { background: var(--success-dim); color: var(--success); }
+.card-header .badge.critical { background: var(--critical-dim); color: var(--critical); }
+
+.card-body { padding: 0; overflow-x: auto; }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+thead th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
+  font-weight: 600;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  background: var(--bg-card);
+}
+
+tbody td {
+  padding: 6px 12px;
+  border-bottom: 1px solid rgba(42, 45, 58, 0.5);
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+tbody tr:hover { background: var(--bg-card-hover); }
+tbody tr.row-critical { background: rgba(213, 0, 249, 0.05); }
+tbody tr.row-high { background: rgba(255, 23, 68, 0.05); }
+tbody tr.row-medium { background: rgba(255, 215, 64, 0.05); }
+
+/* Severity badges */
+.severity {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.severity.critical { background: var(--critical-dim); color: var(--critical); }
+.severity.high { background: var(--danger-dim); color: var(--danger); }
+.severity.medium { background: var(--warning-dim); color: var(--warning); }
+.severity.low { background: var(--success-dim); color: var(--success); }
+
+/* Alert type badges */
+.alert-type {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  letter-spacing: 0.3px;
+}
+
+/* Process name highlight */
+.proc-suspicious { color: var(--danger); }
+.proc-unknown { color: var(--warning); }
+.proc-normal { color: var(--text-primary); }
+
+/* Empty state */
+.empty-state {
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* Progress bars */
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--bg-input);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.progress-fill.accent { background: var(--accent); }
+.progress-fill.success { background: var(--success); }
+.progress-fill.warning { background: var(--warning); }
+.progress-fill.danger { background: var(--danger); }
+
+/* System info section */
+.system-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.info-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+.info-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.info-value {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+/* Loading */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  color: var(--text-muted);
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 12px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Risk Score Circle */
+.risk-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 4px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.risk-circle.low { border-color: var(--success); color: var(--success); }
+.risk-circle.medium { border-color: var(--warning); color: var(--warning); }
+.risk-circle.high { border-color: var(--danger); color: var(--danger); }
+.risk-circle.critical { border-color: var(--critical); color: var(--critical); }
+
+/* Collapsible card body */
+.collapsed .card-body { display: none; }
+
+/* Timestamp */
+.scan-timestamp {
+  text-align: right;
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 8px 16px;
+  font-family: var(--font-mono);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-sans);
+}
+
+.btn:hover { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+.btn-danger:hover { border-color: var(--danger); background: var(--danger-dim); color: var(--danger); }
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.toolbar-right { margin-left: auto; }
+
+/* Filter chips */
+.filter-chip {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+  font-family: var(--font-sans);
+}
+
+.filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+.filter-chip.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+.filter-chip.active.all { background: var(--accent-dim); border-color: var(--accent); }
+.filter-chip.active.critical { background: var(--critical-dim); border-color: var(--critical); color: var(--critical); }
+.filter-chip.active.high { background: var(--danger-dim); border-color: var(--danger); color: var(--danger); }
+.filter-chip.active.medium { background: var(--warning-dim); border-color: var(--warning); color: var(--warning); }
+.filter-chip.active.low { background: var(--success-dim); border-color: var(--success); color: var(--success); }
+
+/* Network Interface mini-card */
+.iface-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.iface-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+}
+
+.iface-card .iface-name { color: var(--accent); font-weight: 600; }
+.iface-card .iface-traffic { color: var(--text-muted); font-size: 10px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container { padding: 12px; }
+  .topbar { padding: 0 12px; }
+  .topbar-logo { font-size: 14px; }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .system-info { grid-template-columns: 1fr 1fr; }
+  table { font-size: 11px; }
+  thead th, tbody td { padding: 4px 8px; }
+}

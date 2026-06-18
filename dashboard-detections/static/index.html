@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Menace — Security Monitor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">
+        <div class="logo-icon">&#9764;</div>
+        DASHBOARD MENACE
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-host" id="hostDisplay">--</span>
+      <span class="topbar-os" id="osDisplay">--</span>
+      <span id="secureBootBadge" class="secure-boot-badge unknown">Secure Boot: --</span>
+      <span id="scanTimestamp">--</span>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div id="loading" class="loading">
+      <div class="loading-spinner"></div>
+      <span>Initializing security monitoring...</span>
+    </div>
+
+    <div id="dashboard" style="display:none">
+
+      <!-- System Info Row -->
+      <div class="system-info" id="systemInfo"></div>
+
+      <!-- Stats Row -->
+      <div class="stats-row" id="statsRow"></div>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <button class="btn" onclick="toggleAllCards()">Toggle All</button>
+        <button class="btn btn-danger" onclick="window.location.reload()">Refresh</button>
+        <div class="toolbar-right" id="alertFilters"></div>
+      </div>
+
+      <!-- Grid: Alerts + Risk -->
+      <div class="grid-2">
+        <div id="alertsCard" class="card">
+          <div class="card-header" onclick="toggleCard(this)">
+            Security Alerts
+            <span class="badge danger" id="alertsBadge">0</span>
+          </div>
+          <div class="card-body">
+            <table>
+              <thead>
+                <tr>
+                  <th>Severity</th>
+                  <th>Type</th>
+                  <th>Message</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="alertsBody"></tbody>
+            </table>
+            <div class="empty-state" id="alertsEmpty">No security alerts — system is clean</div>
+          </div>
+          <div class="scan-timestamp" id="alertsTimestamp"></div>
+        </div>
+
+        <div class="card" id="riskCard">
+          <div class="card-header" onclick="toggleCard(this)">
+            Risk Assessment
+            <span class="badge" id="riskBadge">0</span>
+          </div>
+          <div class="card-body" style="padding:20px;text-align:center">
+            <div class="risk-circle low" id="riskCircle">0</div>
+            <div id="riskLabel" style="font-size:13px;color:var(--text-secondary);margin-bottom:12px">Risk Score</div>
+            <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap">
+              <div><span class="severity critical" style="font-size:13px;padding:4px 14px" id="countCritical">0</span><br><span style="font-size:10px;color:var(--text-muted)">Critical</span></div>
+              <div><span class="severity high" style="font-size:13px;padding:4px 14px" id="countHigh">0</span><br><span style="font-size:10px;color:var(--text-muted)">High</span></div>
+              <div><span class="severity medium" style="font-size:13px;padding:4px 14px" id="countMedium">0</span><br><span style="font-size:10px;color:var(--text-muted)">Medium</span></div>
+              <div><span class="severity low" style="font-size:13px;padding:4px 14px" id="countLow">0</span><br><span style="font-size:10px;color:var(--text-muted)">Low</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid: Ports + Connections -->
+      <div class="grid-2">
+        <div class="card" id="portsCard">
+          <div class="card-header" onclick="toggleCard(this)">
+            Listening Ports
+            <span class="badge" id="portsBadge">0</span>
+          </div>
+          <div class="card-body">
+            <table>
+              <thead>
+                <tr><th>Port</th><th>Protocol</th><th>Process</th><th>PID</th><th>User</th><th>Risk</th></tr>
+              </thead>
+              <tbody id="portsBody"></tbody>
+            </table>
+            <div class="empty-state" id="portsEmpty">No listening ports found</div>
+          </div>
+        </div>
+
+        <div class="card" id="connectionsCard">
+          <div class="card-header" onclick="toggleCard(this)">
+            Network Connections
+            <span class="badge" id="connectionsBadge">0</span>
+          </div>
+          <div class="card-body">
+            <table>
+              <thead>
+                <tr><th>Local</th><th>Remote</th><th>Country</th><th>State</th><th>Process</th><th>PID</th></tr>
+              </thead>
+              <tbody id="connectionsBody"></tbody>
+            </table>
+            <div class="empty-state" id="connectionsEmpty">No active connections</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid: Processes + Core Dumps -->
+      <div class="grid-2">
+        <div class="card" id="processesCard">
+          <div class="card-header" onclick="toggleCard(this)">
+            Processes
+            <span class="badge" id="processesBadge">0</span>
+          </div>
+          <div class="card-body">
+            <table>
+              <thead>
+                <tr><th>PID</th><th>Name</th><th>User</th><th>CPU%</th><th>MEM%</th><th>Network</th><th>Status</th></tr>
+              </thead>
+              <tbody id="processesBody"></tbody>
+            </table>
+            <div class="empty-state" id="processesEmpty">No processes found</div>
+          </div>
+        </div>
+
+        <div class="card" id="dumpsCard">
+          <div class="card-header" onclick="toggleCard(this)">
+            Core Dumps &amp; Suspicious Files
+            <span class="badge" id="dumpsBadge">0</span>
+          </div>
+          <div class="card-body">
+            <table>
+              <thead>
+                <tr><th>File</th><th>Type</th><th>Size</th><th>Risk</th></tr>
+              </thead>
+              <tbody id="dumpsBody"></tbody>
+            </table>
+            <div class="empty-state" id="dumpsEmpty">No core dumps or suspicious files</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kernel Modules & Network Interfaces -->
+      <div class="grid-2">
+        <div class="card" id="modulesCard">
+          <div class="card-header" onclick="toggleCard(this)">
+            Kernel Modules
+            <span class="badge" id="modulesBadge">0</span>
+          </div>
+          <div class="card-body" style="padding:12px">
+            <div id="modulesList"></div>
+            <div class="empty-state" id="modulesEmpty">No kernel module data</div>
+          </div>
+        </div>
+
+        <div class="card" id="ifacesCard">
+          <div class="card-header" onclick="toggleCard(this)">
+            Network Interfaces
+            <span class="badge" id="ifacesBadge">0</span>
+          </div>
+          <div class="card-body" style="padding:12px">
+            <div class="iface-row" id="ifacesList"></div>
+            <div class="empty-state" id="ifacesEmpty">No interface data</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
